@@ -1,5 +1,16 @@
 # BADAS
 
+### Usage
+
+```sh
+./start.sh
+```
+
+- In GNS3:
+	- File->Import project-> `P1/P1.gns3project`
+	- File->Import project-> `P2/P2.gns3project`
+	- File->Import project-> `P3/P3.gns3project`
+
 ### Table of content
 
 - [Commands](#commands)
