@@ -186,8 +186,8 @@ brctl addif br0 vxlan10
 ```sh
 /sbin/ip -d link show vxlan10
 /sbin/ip link show
+/usr/sbin/brctl showmacs br0
 ```
-
 
 ## TO-DO
 
