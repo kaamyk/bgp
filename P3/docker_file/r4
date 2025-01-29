@@ -1,0 +1,8 @@
+FROM frrouting/frr:latest
+
+RUN apk update && apk add iproute2 bridge-utils
+
+COPY conf_files/routers/frr_daemons /etc/frr/daemons
+COPY conf_files/routers/router4/bgpd.conf /etc/frr/bgpd.conf
+COPY conf_files/routers/router4/ospfd.conf /etc/frr/ospfd.conf
+COPY conf_files/routers/router4/zebra.conf /etc/frr/zebra.conf

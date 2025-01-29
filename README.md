@@ -134,15 +134,7 @@ do sh ip bgp
 do sh ip bgp summary	
 ```
 
-
-
-ip | mac | abool
---- | --- | ---
-12 | dfjk | djk
-JK | fjkd | djkj
-djkajfkdjakfdkafjdk jkk| djkfaj | djk
-
-
+## Part 2
 
 ### configuration unicast
 
@@ -189,8 +181,88 @@ brctl addif br0 vxlan10
 /usr/sbin/brctl showmacs br0
 ```
 
-## TO-DO
+## Part 3
 
-- Modifier interfaces dans gns3
-	- Enlever P2/cmds
-- Tester si interface dasn gns3 setup tout au boot (sinon  trouver un moyen)
+### Step
+
+- router1
+	- set up vtysh (6:30)
+		- eth0-2 & lo
+		- bgp
+			- evpn
+		- ospf
+- router2
+	- set up interfaces (6:07)
+	- set up vtysh (6:11)
+		- eth0 & lo
+		- bgp
+			- evpn
+		- ospf
+- router3 (7:43)
+	- set up vtysh (7:43)
+		- eth1 & lo
+		- bgp
+			- evpn
+		- ospf
+- router4
+	- set up interfaces (8:35)
+	- set up vtysh (6:11)
+		- eth2 & lo
+		- bgp
+			- evpn
+		- ospf
+- host1
+	- set up ip 
+- host3
+	- set up ip
+
+### Commands
+
+```sh
+/sbin/ip link add br0 type bridge
+/sbin/ip link set dev br0 up
+/sbin/ip link add name vxlan10 type vxlan id 10 dstport 4789
+/sbin/ip link set vxlan10 up
+# Adapt interface
+brctl addif br0 eth1
+brctl addif br0 vxlan10
+
+vtysh
+conf t
+
+# router 1 (RR)
+router bgp 1
+ neighbor ibgp peer-group
+ neighbor ibgp remote-as 1
+ neighbor ibgp update-source lo
+ bgp listen range 1.1.1.0/29 peer-group ibgp
+
+ address-family l2vpn evpn
+  neighbor ibgp activate
+  neighbor ibgp route-reflector-client
+ exit-address-family
+
+router ospf
+ network 0.0.0.0/0 area 0
+ line vty
+
+
+# router 2/3/4
+router bgp 1
+ neighbor 1.1.1.1 remote-as 1
+ neighbor 1.1.1.1 update-source lo
+
+ address-family l2vpn evpn
+  neighbor 1.1.1.1 activate
+  advertise-all-vni
+ exit-address-family
+
+router ospf
+```
+
+```sh
+do sh bgp summary
+do sh bgp l2vpn evpn
+```
+
+## TO-DO
