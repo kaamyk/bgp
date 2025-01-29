@@ -1,0 +1,14 @@
+FROM frrouting/frr:latest
+
+RUN apk update && apk add iproute2 openrc
+
+COPY conf_files/routers/frr_daemons /etc/frr/daemons
+COPY conf_files/routers/router2/bgpd.conf /etc/frr/bgpd.conf
+COPY conf_files/routers/router2/isisd.conf /etc/frr/isisd.conf
+COPY conf_files/routers/router2/ospfd.conf /etc/frr/ospfd.conf
+COPY conf_files/routers/router2/staticd.conf /etc/frr/staticd.conf
+COPY conf_files/routers/router2/zebra.conf /etc/frr/zebra.conf
+
+RUN rc-update add local default
+COPY conf_files/routers/init_vxlan.sh /etc/local.d/init_vxlan.start
+RUN chmod +x /etc/local.d/init_vxlan.start

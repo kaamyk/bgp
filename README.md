@@ -1,5 +1,18 @@
 # BADAS
 
+
+### Table of content
+
+- [Usage](#usage)
+- [Commands](#commands)
+	- [Prerequisites](#prerequisites)
+	- [Commands installation gsn3](#commands-installation-gsn3)
+	- [Commands FRRouting](#commands-frrouting)
+- [Part 1](#part-1)
+	- [Requirements](#requirement-part-1)
+	- [Notions](#notions-part-1)
+	- [Display](#display-part-1)
+
 ### Usage
 
 ```sh
@@ -10,17 +23,6 @@
 	- File->Import project-> `P1/P1.gns3project`
 	- File->Import project-> `P2/P2.gns3project`
 	- File->Import project-> `P3/P3.gns3project`
-
-### Table of content
-
-- [Commands](#commands)
-	- [Prerequisites](#prerequisites)
-	- [Commands installation gsn3](#commands-installation-gsn3)
-	- [Commands FRRouting](#commands-frrouting)
-- [Part 1](#part-1)
-	- [Requirements](#requirement-part-1)
-	- [Notions](#notions-part-1)
-	- [Display](#display-part-1)
 
 ### Commands
 
@@ -139,3 +141,56 @@ ip | mac | abool
 12 | dfjk | djk
 JK | fjkd | djkj
 djkajfkdjakfdkafjdk jkk| djkfaj | djk
+
+
+
+### configuration unicast
+
+routeur 1
+
+```sh
+/sbin/ip link add br0 type bridge
+/sbin/ip link set dev br0 up
+/sbin/ip link add name vxlan10 type vxlan id 10 dev eth0 remote 30.1.1.2 local 30.1.1.1 dstport 4789
+/sbin/ip link set vxlan10 up
+brctl addif br0 eth1
+brctl addif br0 vxlan10
+```
+
+routeur 2
+
+```sh
+/sbin/ip link add br0 type bridge
+/sbin/ip link set dev br0 up
+/sbin/ip link add name vxlan10 type vxlan id 10 dev eth0 remote 30.1.1.1 local 30.1.1.2 dstport 4789
+/sbin/ip link set vxlan10 up
+brctl addif br0 eth1
+brctl addif br0 vxlan10
+```
+
+### configuration multicast
+
+> Same configuration for both routers
+
+```sh
+/sbin/ip link add br0 type bridge
+/sbin/ip link set dev br0 up
+/sbin/ip link add name vxlan10 type vxlan id 10 dev eth0 group 239.1.1.1 dstport 4789
+/sbin/ip link set vxlan10 up
+brctl addif br0 eth1
+brctl addif br0 vxlan10
+```
+
+### show infos
+
+```sh
+/sbin/ip -d link show vxlan10
+/sbin/ip link show
+```
+
+
+## TO-DO
+
+- Modifier interfaces dans gns3
+	- Enlever P2/cmds
+- Tester si interface dasn gns3 setup tout au boot (sinon  trouver un moyen)
