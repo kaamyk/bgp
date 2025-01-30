@@ -244,7 +244,7 @@ router bgp 1
 
 router ospf
  network 0.0.0.0/0 area 0
- line vty
+line vty
 
 
 # router 2/3/4
@@ -266,3 +266,15 @@ do sh bgp l2vpn evpn
 ```
 
 ## TO-DO
+
+
+router ospf
+ redistribute bgp 1
+exit
+
+router bgp 1
+ neighbor ibgp peer-group
+ neighbor ibgp remote-as 1
+ neighbor ibgp update-source lo
+ neighbor ibgp route-reflector-client
+exit
