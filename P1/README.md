@@ -1,8 +1,9 @@
 # Part 1: GNS3 configuration with Docker
 
-> Goal: Install and set up GNS3 and Docker, and create two basics images for routeurs and hosts.
+> Goal: install and set up GNS3 and Docker, and create two basics images for routeurs and hosts.
 
 ### Table of content
+- [Diagram](#diagram)
 - [Definitions](#definitions)
 	- [Zebra](#zebra)
 	- [GNS3](#gns3)
@@ -13,6 +14,11 @@
 	- [Enable daemons](#enable-daemons)
 	- [Configuration terminal](#configuration-terminal)
 	- [Display command](#display-command)
+	- [Usefull command](#usefull-command)
+
+## Diagram
+
+![p1-diagram](./images/p1-diagram.png)
 
 ## Definitions
 
@@ -60,5 +66,14 @@ The changes can be checked by restarting the container and simply cat the file a
 
 > These commands can be run in vtysh and configuration terminal by adding ```do```. Ex: ```sh int``` -> ```do sh int```
 
-```sh int``` (show interfaces): Pretty self explainatory.
-e
+```sh
+# show interfaces
+sh int
+```
+
+### Usefull commands
+
+```sh
+# gives to device eth0 the address 10.1.1.1/24
+ip addr1 add 10.1.1.1/24 dev eth0
+```
