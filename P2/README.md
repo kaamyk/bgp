@@ -12,7 +12,7 @@
 
 ## Diagram
 
-![Network diagram](./images/p2-diagram.png)
+![Network diagram](./images/p2_diagram.png)
 
 ## Definitions
 
